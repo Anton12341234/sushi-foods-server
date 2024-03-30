@@ -35,7 +35,7 @@ orderRouter.post('/',isAuth,expressAsyncHandler(async(req,res)=>{
   res.status(400).send({message:'cart is empty!'})
  }
  else{
-    const accessToken = oAuth2Client.getAccessToken();
+    
      const newOrder= new Order({
         orderItems:req.body.orderItems,
         shippingAddress:req.body.shippingAddress,
@@ -50,37 +50,7 @@ orderRouter.post('/',isAuth,expressAsyncHandler(async(req,res)=>{
      })
     
      const order = await newOrder.save()
-
-   //   let testAccount = await nodemailer.createTestAccount();
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type:'OAuth2',
-      user:'jaydeepshelake2001@gmail.com' ,
-      clientId:CLIENT_ID,
-      clientSecret:CLIENT_SECRET,
-      refreshToken:REFRESH_TOKEN,
-      accessToken:accessToken
-    },
-  });
-
-   // send mail with defined transport object
-   let info = await  transporter.sendMail({
-    from: 'jaydeepshelake2001@gmail.com', // sender address
-    to: order.email, // list of receivers
-    subject: "Order placed Successfuly🎉",
-    text: "Hello world?", // Subject line
-    html:emailTemplate(order), // html body
-  });
-
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-res.status(201).send({message:'Order Placed !',order:order})
+     res.status(201).send({message:'Order Placed !',order:order})
 
  }
 }))
